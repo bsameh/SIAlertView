@@ -746,7 +746,8 @@ static SIAlertView *__si_alert_current_view;
         if (self.items.count == 2 && self.buttonsListStyle == SIAlertViewButtonsListStyleNormal) {
             CGFloat width = (self.containerView.bounds.size.width - CONTENT_PADDING_LEFT * 2 - GAP) * 0.5;
             UIButton *button = self.buttons[0];
-            button.frame = CGRectMake(CONTENT_PADDING_LEFT, y, width, BUTTON_HEIGHT);
+            //button.frame = CGRectMake(CONTENT_PADDING_LEFT, y, width, BUTTON_HEIGHT);
+            button.frame = _buttonFrame;
             button = self.buttons[1];
             button.frame = CGRectMake(CONTENT_PADDING_LEFT + width + GAP, y, width, BUTTON_HEIGHT);
         } else {
@@ -1035,8 +1036,12 @@ static SIAlertView *__si_alert_current_view;
     self.messageLabel.textColor = messageColor;
 }
 
+// For normal list style only.
 - (void)setButtonFrame:(CGRect)buttonFrame
 {
+    if (_buttonFrame == buttonFrame) {
+        return;
+    }
     for (UIButton *button in self.buttons) {
         button.frame = buttonFrame;
     }
