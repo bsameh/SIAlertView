@@ -1035,6 +1035,13 @@ static SIAlertView *__si_alert_current_view;
     self.messageLabel.textColor = messageColor;
 }
 
+- (void)setButtonFrame:(CGRect)buttonFrame
+{
+    for (UIButton *button in self.buttons) {
+        button.frame = buttonFrame;
+    }
+}
+
 - (void)setButtonFont:(UIFont *)buttonFont
 {
     if (_buttonFont == buttonFont) {
