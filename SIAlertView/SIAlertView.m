@@ -17,8 +17,8 @@ NSString *const SIAlertViewDidDismissNotification = @"SIAlertViewDidDismissNotif
 
 #define DEBUG_LAYOUT 0
 
-#define MESSAGE_MIN_LINE_COUNT 3
-#define MESSAGE_MAX_LINE_COUNT 5
+#define MESSAGE_MIN_LINE_COUNT 1
+#define MESSAGE_MAX_LINE_COUNT 25
 #define GAP 10
 #define CANCEL_BUTTON_PADDING_TOP 5
 #define CONTENT_PADDING_LEFT 10
@@ -243,7 +243,6 @@ static SIAlertView *__si_alert_current_view;
     appearance.messageFont = [UIFont systemFontOfSize:16];
     appearance.titleTextAlignment = NSTextAlignmentLeft;
     appearance.messageTextAlignment = NSTextAlignmentLeft;
-    appearance.minLineHeight = 1;
     appearance.buttonHeight = 32;
     appearance.buttonFont = [UIFont systemFontOfSize:[UIFont buttonFontSize]];
     appearance.buttonColor = [UIColor colorWithWhite:0.4 alpha:1];
@@ -819,7 +818,7 @@ static SIAlertView *__si_alert_current_view;
 
 - (CGFloat)heightForMessageLabel
 {
-    CGFloat minHeight = _minLineHeight * self.messageLabel.font.lineHeight;
+    CGFloat minHeight = MESSAGE_MIN_LINE_COUNT * self.messageLabel.font.lineHeight;
     if (self.messageLabel) {
         CGFloat maxHeight = MESSAGE_MAX_LINE_COUNT * self.messageLabel.font.lineHeight;
         CGSize size = [self.message sizeWithFont:self.messageLabel.font
@@ -1055,14 +1054,6 @@ static SIAlertView *__si_alert_current_view;
     }
     _messageTextAlignment = messageTextAlignment;
     self.messageLabel.textAlignment = messageTextAlignment;
-}
-
-- (void)setMinLineHeight:(int)minLineHeight
-{
-    if (_minLineHeight == minLineHeight) {
-        return;
-    }
-    _minLineHeight = minLineHeight;
 }
 
 - (void)setButtonHeight:(CGFloat)buttonHeight
