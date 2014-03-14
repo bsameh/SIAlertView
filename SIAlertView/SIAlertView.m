@@ -241,6 +241,8 @@ static SIAlertView *__si_alert_current_view;
     appearance.messageColor = [UIColor darkGrayColor];
     appearance.titleFont = [UIFont boldSystemFontOfSize:20];
     appearance.messageFont = [UIFont systemFontOfSize:16];
+    appearance.titleTextAlignment = NSTextAlignmentLeft;
+    appearance.messageTextAlignment = NSTextAlignmentLeft;
     appearance.buttonHeight = 32;
     appearance.buttonFont = [UIFont systemFontOfSize:[UIFont buttonFontSize]];
     appearance.buttonColor = [UIColor colorWithWhite:0.4 alpha:1];
@@ -866,7 +868,7 @@ static SIAlertView *__si_alert_current_view;
 	if (self.title) {
 		if (!self.titleLabel) {
 			self.titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
-			self.titleLabel.textAlignment = NSTextAlignmentCenter;
+			self.titleLabel.textAlignment = _titleTextAlignment;
             self.titleLabel.backgroundColor = [UIColor clearColor];
 			self.titleLabel.font = self.titleFont;
             self.titleLabel.textColor = self.titleColor;
@@ -894,7 +896,7 @@ static SIAlertView *__si_alert_current_view;
     if (self.message) {
         if (!self.messageLabel) {
             self.messageLabel = [[UILabel alloc] initWithFrame:self.bounds];
-            self.messageLabel.textAlignment = NSTextAlignmentCenter;
+            self.messageLabel.textAlignment = _messageTextAlignment;
             self.messageLabel.backgroundColor = [UIColor clearColor];
             self.messageLabel.font = self.messageFont;
             self.messageLabel.textColor = self.messageColor;
@@ -1034,6 +1036,24 @@ static SIAlertView *__si_alert_current_view;
     }
     _messageColor = messageColor;
     self.messageLabel.textColor = messageColor;
+}
+
+- (void)setTitleTextAlignment:(NSTextAlignment)titleTextAlignment
+{
+    if (_titleTextAlignment == titleTextAlignment) {
+        return;
+    }
+    _titleTextAlignment = titleTextAlignment;
+    self.titleLabel.textAlignment = titleTextAlignment;
+}
+
+- (void)setMessageTextAlignment:(NSTextAlignment)messageTextAlignment
+{
+    if (_messageTextAlignment == messageTextAlignment) {
+        return;
+    }
+    _messageTextAlignment = messageTextAlignment;
+    self.messageLabel.textAlignment = messageTextAlignment;
 }
 
 - (void)setButtonHeight:(CGFloat)buttonHeight
