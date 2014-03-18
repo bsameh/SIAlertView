@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TTTAttributedLabel.h"
 
 extern NSString *const SIAlertViewWillShowNotification;
 extern NSString *const SIAlertViewDidShowNotification;
@@ -40,7 +41,7 @@ typedef NS_ENUM(NSInteger, SIAlertViewTransitionStyle) {
 @class SIAlertView;
 typedef void(^SIAlertViewHandler)(SIAlertView *alertView);
 
-@interface SIAlertView : UIView
+@interface SIAlertView : UIView <TTTAttributedLabelDelegate>
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *message;

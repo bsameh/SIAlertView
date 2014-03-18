@@ -48,7 +48,7 @@ static SIAlertView *__si_alert_current_view;
 @property (nonatomic, assign, getter = isVisible) BOOL visible;
 
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *messageLabel;
+@property (nonatomic, strong) TTTAttributedLabel *messageLabel;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) NSMutableArray *buttons;
 
@@ -368,7 +368,7 @@ static SIAlertView *__si_alert_current_view;
         self.oldKeyWindow.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
     }
 #endif
-
+    
     if (![[SIAlertView sharedQueue] containsObject:self]) {
         [[SIAlertView sharedQueue] addObject:self];
     }
@@ -416,9 +416,9 @@ static SIAlertView *__si_alert_current_view;
             self.didShowHandler(self);
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SIAlertViewDidShowNotification object:self userInfo:nil];
-        #ifdef __IPHONE_7_0
+#ifdef __IPHONE_7_0
         [self addParallaxEffect];
-        #endif
+#endif
         
         [SIAlertView setAnimating:NO];
         
@@ -443,9 +443,9 @@ static SIAlertView *__si_alert_current_view;
             self.willDismissHandler(self);
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SIAlertViewWillDismissNotification object:self userInfo:nil];
-        #ifdef __IPHONE_7_0
-                [self removeParallaxEffect];
-        #endif
+#ifdef __IPHONE_7_0
+        [self removeParallaxEffect];
+#endif
     }
     
     void (^dismissComplete)(void) = ^{
@@ -738,6 +738,10 @@ static SIAlertView *__si_alert_current_view;
             y += GAP;
         }
         self.messageLabel.text = self.message;
+        
+        NSRange range = [self.messageLabel.text rangeOfString:@"MeinVodafone-App"];
+        [self.messageLabel addLinkToURL:[NSURL URLWithString:@"https://itunes.apple.com/de/app/meinvodafone/id398195347?mt=8"] withRange:range];
+        
         CGFloat height = [self heightForMessageLabel];
         self.messageLabel.frame = CGRectMake(CONTENT_PADDING_LEFT, y, self.containerView.bounds.size.width - CONTENT_PADDING_LEFT * 2, height);
         y += height;
@@ -895,12 +899,22 @@ static SIAlertView *__si_alert_current_view;
 {
     if (self.message) {
         if (!self.messageLabel) {
-            self.messageLabel = [[UILabel alloc] initWithFrame:self.bounds];
-            self.messageLabel.textAlignment = _messageTextAlignment;
-            self.messageLabel.backgroundColor = [UIColor clearColor];
+            
+            /*self.messageLabel = [[UILabel alloc] initWithFrame:self.bounds];
+             self.messageLabel.textAlignment = _messageTextAlignment;
+             self.messageLabel.backgroundColor = [UIColor clearColor];
+             self.messageLabel.font = self.messageFont;
+             self.messageLabel.textColor = self.messageColor;
+             self.messageLabel.numberOfLines = MESSAGE_MAX_LINE_COUNT;*/
+            
+            self.messageLabel = [[TTTAttributedLabel alloc] initWithFrame:self.bounds];
             self.messageLabel.font = self.messageFont;
             self.messageLabel.textColor = self.messageColor;
+            self.messageLabel.backgroundColor = [UIColor clearColor];
+            self.messageLabel.textAlignment = NSTextAlignmentLeft;
             self.messageLabel.numberOfLines = MESSAGE_MAX_LINE_COUNT;
+            self.messageLabel.delegate = self;
+            
             [self.containerView addSubview:self.messageLabel];
 #if DEBUG_LAYOUT
             self.messageLabel.backgroundColor = [UIColor redColor];
@@ -912,6 +926,12 @@ static SIAlertView *__si_alert_current_view;
         self.messageLabel = nil;
     }
     [self invalidateLayout];
+}
+
+- (void)attributedLabel:(__unused TTTAttributedLabel *)label
+   didSelectLinkWithURL:(NSURL *)url
+{
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 - (void)setupButtons
