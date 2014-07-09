@@ -22,8 +22,8 @@ NSString *const SIAlertViewDidDismissNotification = @"SIAlertViewDidDismissNotif
 #define GAP 10
 #define CANCEL_BUTTON_PADDING_TOP 5
 #define CONTENT_PADDING_LEFT 10
-#define CONTENT_PADDING_TOP 12
-#define CONTENT_PADDING_BOTTOM 10
+#define CONTENT_PADDING_TOP 20
+#define CONTENT_PADDING_BOTTOM 20
 //#define BUTTON_HEIGHT 44
 #define CONTAINER_WIDTH 300
 
@@ -241,8 +241,8 @@ static SIAlertView *__si_alert_current_view;
     appearance.messageColor = [UIColor darkGrayColor];
     appearance.titleFont = [UIFont boldSystemFontOfSize:20];
     appearance.messageFont = [UIFont systemFontOfSize:16];
-    appearance.titleTextAlignment = NSTextAlignmentLeft;
-    appearance.messageTextAlignment = NSTextAlignmentLeft;
+    appearance.titleTextAlignment = NSTextAlignmentCenter;
+    appearance.messageTextAlignment = NSTextAlignmentCenter;
     appearance.buttonHeight = 32;
     appearance.buttonFont = [UIFont systemFontOfSize:[UIFont buttonFontSize]];
     appearance.buttonColor = [UIColor colorWithWhite:0.4 alpha:1];
